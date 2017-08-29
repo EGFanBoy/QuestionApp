@@ -1,7 +1,7 @@
 
 
 import java.io.IOException;
-import java.io.PrintWriter;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -69,7 +69,7 @@ public class QuestionApp extends HttpServlet {
 				 for(int j=0;j<a.length;j++){
 			    	  
 					 if(request.getParameter("answer"+Integer.toString(j+1))==null||request.getParameter("answer"+Integer.toString(j+1)).equals("")){
-						 request.getSession().setAttribute("err", "one of more field(s) were left empty. Please fill out every question.");
+						 request.getSession().setAttribute("err", "yes");
 						 response.sendRedirect("QuestionDashboard.jsp");
 						 return;//leaves loop as soon as one field is found empty
 					 }else{

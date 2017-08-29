@@ -56,6 +56,8 @@ public class LoginHandler extends HttpServlet {
 			ResultSet rs=s.executeQuery("SELECT*FROM users");
 			while(rs.next()){
 				if(rs.getString("id").equals(username)&&rs.getString("password").equals(password)){
+					
+					 request.getSession().setAttribute("loggedIn","yes");
 					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddDel.html");
 					dispatcher.forward(request,response);
 				}

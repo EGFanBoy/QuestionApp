@@ -7,7 +7,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Question Dashboard</title>
+<title>QuestionApp-Interview</title>
 </head>
 <body>
 <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver"
@@ -17,10 +17,11 @@ user="root" password="skadoosh"/>
  SELECT*from questions</sql:query>
  <form action="QuestionApp" method="post">
  <%int i=1; %>
- <c:set var="err" value="${sessionScope.err}"/>
- <font color="red"> <c:out value="${err}"></c:out></font>
+ <c:if test="${sessionScope.err=='yes' }">
+
+ <font color="red"> <c:out value="${'one of more field(s) were left empty. Please fill out every question.'}"></c:out></font>
  <br/>
- 
+ </c:if>
 
 
  <c:forEach var="table" items="${rs.rows}">  

@@ -49,7 +49,7 @@ public class AddField extends HttpServlet {
 		}
 
 		if (request.getParameter("question") == null || request.getParameter("question").equals("")) {
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddQ.html");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddQ.jsp");
 			
 			out.print("<font color=red>Field left empty. Please enter a question!</font>");
 			dispatcher.include(request,response);
@@ -59,7 +59,7 @@ public class AddField extends HttpServlet {
 				Connection c = DriverManager.getConnection(dbName, dbUser, dbPw);
 				Statement s = c.createStatement();
 			s.executeUpdate("INSERT into questions(question)"+"VALUES('"+request.getParameter("question")+"')");
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddQ.html");
+			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddQ.jsp");
 			
 			out.print("<font color=green>Question successfully added. Feel free to add another.</font>");
 			dispatcher.include(request,response);

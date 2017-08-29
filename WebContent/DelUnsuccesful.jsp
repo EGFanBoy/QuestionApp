@@ -5,14 +5,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Deletion not successful</title>
 </head>
 <body>
 <c:out value="${'No questions selected for deletion'}"/>
 <br/>
 <a href="DelQ.jsp">Go back to deletion menu</a>
 <br/>
-<a href="AddDel.html">Go back to main question menu</a>
+<a href="AddDel.jsp">Go back to main question menu</a>
 
 </body>
 </html>
