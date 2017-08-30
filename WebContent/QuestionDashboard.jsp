@@ -10,6 +10,7 @@
 <title>QuestionApp-Interview</title>
 </head>
 <body>
+<!-- information to connect to the db -->
 <sql:setDataSource var="db" driver="com.mysql.jdbc.Driver"
 url="jdbc:mysql://localhost/questions"
 user="root" password="skadoosh"/>
@@ -17,15 +18,17 @@ user="root" password="skadoosh"/>
  SELECT*from questions</sql:query>
  <form action="QuestionApp" method="post">
  <%int i=1; %>
+ <!-- if the session variable is set to yes the page will display an error message -->
  <c:if test="${sessionScope.err=='yes' }">
 
  <font color="red"> <c:out value="${'one of more field(s) were left empty. Please fill out every question.'}"></c:out></font>
  <br/>
  </c:if>
 
-
+<!-- Displays the questions from the database followed by a textbox -->
  <c:forEach var="table" items="${rs.rows}">  
  <c:set var="textVal" value="answer"></c:set>
+ <!-- the value of i is given to an arbitrary variable to facilitate concatenation -->
  <c:set var="textNumb" value="<%=i%>"></c:set>
  <c:out value="${table.question}">
  </c:out>

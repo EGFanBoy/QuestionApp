@@ -35,43 +35,47 @@ public class AddField extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// TODO Auto-generated method stub
+
+		/* Information necessary to connect to SQL database */
 		String jdbcDriver = "com.mysql.jdbc.Driver";
 		String dbName = "jdbc:mysql://localhost:3306/questions?useSSL=false";
 		String dbUser = "root";
 		String dbPw = "skadoosh";
-		PrintWriter out=response.getWriter();
-		// PrintWriter out=response.getWriter(); //USED DURING TESTING
+		PrintWriter out = response.getWriter(); /* Printwriter object, might
+											 		replace later*/
 
 		try {
-			Class.forName(jdbcDriver);
-		} catch (ClassNotFoundException e) {
+			/*if the field is empty, it will forward back to AddQ.jsp and add an error message in red*/
+			if (request.getParameter("question") == null || request.getParameter("question").equals("")) {
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddQ.jsp");
+
+				out.print("<font color=red>Field left empty. Please enter a question!</font>"); //might be replace
+				dispatcher.include(request, response);
+			} else {
+
+				Class.forName(jdbcDriver);//load the driver for mySQL
+				Connection c = DriverManager.getConnection(dbName, dbUser, dbPw);//create connection to mySQL database
+				Statement s = c.createStatement();//creates SQL statement, change to preparedStatement
+				
+				/*Adds the questions extracted from the form to the database for future interviews.
+				 Afterwards it forwards back to AddQ.jsp with a success message.*/
+				s.executeUpdate(
+						"INSERT into questions(question)" + "VALUES('" + request.getParameter("question") + "')");
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddQ.jsp");
+
+				out.print("<font color=green>Question successfully added. Feel free to add another.</font>");
+				dispatcher.include(request, response);
+				/*Close both the mySQl connection and Printwriter*/
+				c.close();
+				out.close();
+			}
+		}
+
+		catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-
-		if (request.getParameter("question") == null || request.getParameter("question").equals("")) {
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddQ.jsp");
-			
-			out.print("<font color=red>Field left empty. Please enter a question!</font>");
-			dispatcher.include(request,response);
-		} else {
-
-			try {
-				Connection c = DriverManager.getConnection(dbName, dbUser, dbPw);
-				Statement s = c.createStatement();
-			s.executeUpdate("INSERT into questions(question)"+"VALUES('"+request.getParameter("question")+"')");
-			RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddQ.jsp");
-			
-			out.print("<font color=green>Question successfully added. Feel free to add another.</font>");
-			dispatcher.include(request,response);
-			
-			c.close();
-			}
-
-			catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
 		
+
 	}
 
 	/**

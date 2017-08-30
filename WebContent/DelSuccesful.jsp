@@ -11,6 +11,9 @@
 
 
 <c:out value="${'Question(s) successfully deleted '}"/>
-
+<br/>
+<a href="DelQ.jsp">Go back to deletion menu</a>
+<br/>
+<a href="AddDel.jsp">Go back to main question menu</a>
 </body>
 </html>
