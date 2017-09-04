@@ -2,7 +2,7 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -44,10 +44,9 @@ public class LoginHandler extends HttpServlet {
 		String username = "";
 		String password = "";
 		/* Necessary information to access mySQL database */
-		String jdbcDriver = "com.mysql.jdbc.Driver";
-		String dbName = "jdbc:mysql://localhost:3306/questions?useSSL=false";
-		String dbUser = "root";
-		String dbPw = "skadoosh";
+		
+		String dbName = "questionapp";
+		
 		PrintWriter out = response
 				.getWriter();/* printwriter object, might be replace */
 
@@ -68,12 +67,13 @@ public class LoginHandler extends HttpServlet {
 				 */
 				username=request.getParameter("Username");
 				password=request.getParameter("Password");
-				Class.forName(jdbcDriver);// loads the mySQL driver
-				Connection c = DriverManager.getConnection(dbName, dbUser, dbPw);// connects
+			// loads the mySQL driver
+						//Connection c = DriverManager.getConnection(dbName, dbUser, dbPw);// connects
 																					// to
 																					// the
 																					// mySQL
 																					// database
+				Connection c=SQLHandler.getSQLConnection(dbName);
 				Statement s = c.createStatement();// creates the statement,
 													// change to
 													// preparedstatement
@@ -90,7 +90,7 @@ public class LoginHandler extends HttpServlet {
 				 */
 
 				while (rs.next()) {
-					if (rs.getString("id").equals(username) && rs.getString("password").equals(password)) {
+					if (rs.getString("username").equals(username) && rs.getString("password").equals(password)) {
 
 						request.getSession().setAttribute("loggedIn", "yes");
 						RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddDel.jsp");
@@ -115,7 +115,7 @@ public class LoginHandler extends HttpServlet {
 
 			} // end of else statement
 
-		} catch (SQLException | ClassNotFoundException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 

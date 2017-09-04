@@ -3,7 +3,7 @@
 import java.io.IOException;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -39,23 +39,22 @@ public class QuestionDeleter extends HttpServlet {
 		/*Necessary info to access SQl db
 		 * 
 		 */
-		String jdbcDriver="com.mysql.jdbc.Driver";
-		String dbName="jdbc:mysql://localhost:3306/questions?useSSL=false";
-		String dbUser="root";
-		String dbPw="skadoosh";
+
+		String dbName="questionapp";
+	
 		int i=0;//integer counter
 		int delQuantity=0;//counter used to detect if questions were actually deleted
 		
 		
 		try{
-			Class.forName(jdbcDriver);//loads driver to use SQL
-			Connection c=DriverManager.getConnection(dbName,dbUser,dbPw);//connects to the db
+		
+			Connection c=SQLHandler.getSQLConnection(dbName);//connects to the db
 			Statement s=c.createStatement();//creates statement object
 			/*creates a result set to find the number of questions in the database to properly size the questions
 			 * array
 			 */
 			
-			ResultSet rs1=s.executeQuery("select count(*) from questions");
+			ResultSet rs1=s.executeQuery("select count(*) from interviewq");
 			rs1.next();
 			i=rs1.getInt("count(*)");
 			String questions[]=new String[i];
@@ -63,7 +62,7 @@ public class QuestionDeleter extends HttpServlet {
 			 * 
 			 */
 			
-			ResultSet rs=s.executeQuery("SELECT * FROM questions");
+			ResultSet rs=s.executeQuery("SELECT * FROM interviewq");
 			i=0;
 			while(rs.next()){
 			questions[i]=rs.getString("question");
@@ -77,7 +76,7 @@ public class QuestionDeleter extends HttpServlet {
 	for(i=0;i<questions.length;i++){
 		
 		if(request.getParameter("check"+Integer.toString(i+1))!=null&&request.getParameter("check"+Integer.toString(i+1)).equals("checked")){
-			s.executeUpdate("delete from questions where question="+"'"+questions[i]+"'");
+			s.executeUpdate("delete from interviewq where question="+"'"+questions[i]+"'");
 		delQuantity++;
 		}
 		
@@ -95,7 +94,7 @@ public class QuestionDeleter extends HttpServlet {
 	}
 	
 	
-	}catch(SQLException|ClassNotFoundException e){
+	}catch(SQLException e){
 		e.printStackTrace();
 	}
 	}

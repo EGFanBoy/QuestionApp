@@ -3,7 +3,7 @@
 import java.io.IOException;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -37,24 +37,18 @@ public class QuestionApp extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		/*Necessary to connect to the mySQL database*/
-		String jdbcDriver="com.mysql.jdbc.Driver";
-		String dbName="jdbc:mysql://localhost:3306/questions?useSSL=false";
-		String dbUser="root";
-		String dbPw="skadoosh";
-	
 		
-	   
-			
-			
+		String dbName="questionapp";//name of mySQL database used by this application
+
 			try{
-				Class.forName(jdbcDriver);//loads driver to use mySQL
-				Connection c=DriverManager.getConnection(dbName,dbUser,dbPw);//connections to the db
+			
+				Connection c=SQLHandler.getSQLConnection(dbName);//connections to the db
 				Statement s=c.createStatement();
 				/*creates a result set to find the number of questions in the database to properly size the arrays for the 
 				 * questions to the extracted and the answers from the user
 				 */
 				
-				ResultSet rs1=s.executeQuery("select count(*) from questions");
+				ResultSet rs1=s.executeQuery("select count(*) from interviewq");
 				rs1.next();
 				int i=rs1.getInt("count(*)");
 				
@@ -68,7 +62,7 @@ public class QuestionApp extends HttpServlet {
 				/*Second SQL statement that extracts all the questions from the database and populates the question array
 				 * 
 				 */
-				ResultSet rs2=s.executeQuery("SELECT * from questions");
+				ResultSet rs2=s.executeQuery("SELECT * from interviewq");
 				i=0;//resets the counter to 0
 				while(rs2.next()){
 					questions[i]=rs2.getString("question");
@@ -93,17 +87,16 @@ public class QuestionApp extends HttpServlet {
 
 			     compileEmail(questions,answers);//sends the questions and answers array to compile them together to be emailed
 				c.close();//close the connection to the db
+				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/SubmitSuccesful.html");
+				dispatcher.forward(request,response);
 				
-			}catch(SQLException|ClassNotFoundException e){
+			}catch(SQLException e){
 				e.printStackTrace();
 				}
 			/*After all the code in the try block was executed, it will make sure to forward the user to the 
 			 * successful submission page
 			 */
-			finally{
-					RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/SubmitSuccesful.html");
-					dispatcher.forward(request,response);
-				}
+			
 			
 			
 			

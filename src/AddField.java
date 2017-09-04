@@ -2,7 +2,7 @@
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
+
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -37,10 +37,9 @@ public class AddField extends HttpServlet {
 		// TODO Auto-generated method stub
 
 		/* Information necessary to connect to SQL database */
-		String jdbcDriver = "com.mysql.jdbc.Driver";
-		String dbName = "jdbc:mysql://localhost:3306/questions?useSSL=false";
-		String dbUser = "root";
-		String dbPw = "skadoosh";
+	
+		String dbName = "questionapp";
+		
 		PrintWriter out = response.getWriter(); /* Printwriter object, might
 											 		replace later*/
 
@@ -53,14 +52,14 @@ public class AddField extends HttpServlet {
 				dispatcher.include(request, response);
 			} else {
 
-				Class.forName(jdbcDriver);//load the driver for mySQL
-				Connection c = DriverManager.getConnection(dbName, dbUser, dbPw);//create connection to mySQL database
+				
+				Connection c = SQLHandler.getSQLConnection(dbName);//create connection to mySQL database
 				Statement s = c.createStatement();//creates SQL statement, change to preparedStatement
 				
 				/*Adds the questions extracted from the form to the database for future interviews.
 				 Afterwards it forwards back to AddQ.jsp with a success message.*/
 				s.executeUpdate(
-						"INSERT into questions(question)" + "VALUES('" + request.getParameter("question") + "')");
+						"INSERT into interviewq(question)" + "VALUES('" + request.getParameter("question") + "')");
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddQ.jsp");
 
 				out.print("<font color=green>Question successfully added. Feel free to add another.</font>");
@@ -71,7 +70,7 @@ public class AddField extends HttpServlet {
 			}
 		}
 
-		catch (SQLException | ClassNotFoundException e) {
+		catch (SQLException e) {
 			e.printStackTrace();
 		}
 		

@@ -1,0 +1,31 @@
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Corben', Georgia, Times, serif;
+    color:orange;
+}
+a:link,a:visited{
+	color:orange;
+}
+p, div {
+    font-family: 'Nobile', Helvetica, Arial, sans-serif;
+    color:orange;
+}
+body { 
+    background: url(img/escheresque_ste.png) repeat 0 0;
+}
+
+.btn-custom {
+  background-color: hsl(19, 100%, 49%) !important;
+  background-repeat: repeat-x;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#fe854c", endColorstr="#f94f00");
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#fe854c), to(#f94f00));
+  background-image: -moz-linear-gradient(top, #fe854c, #f94f00);
+  background-image: -ms-linear-gradient(top, #fe854c, #f94f00);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fe854c), color-stop(100%, #f94f00));
+  background-image: -webkit-linear-gradient(top, #fe854c, #f94f00);
+  background-image: -o-linear-gradient(top, #fe854c, #f94f00);
+  background-image: linear-gradient(#fe854c, #f94f00);
+  border-color: #f94f00 #f94f00 hsl(19, 100%, 45%);
+  color: #333 !important;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.26);
+  -webkit-font-smoothing: antialiased;
+}

@@ -5,6 +5,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<link href="CSS/bootstrap.min.css" rel="stylesheet">
+<link href="CSS/custom.css" rel="stylesheet">
+<link href="http://fonts.googleapis.com/css?family=Corben:bold" rel="stylesheet" type="text/css">
+ <link href="http://fonts.googlepis.com/css?family=Nobile" rel="stylesheet" type="text/css">
 <title>Add your question(s)</title>
 </head>
 <body>
@@ -16,7 +20,7 @@
 <!-- Message box and submit button -->
 <form action="AddField" method="post">
 <Input type="text" size="80" name="question"/>
-<button type="submit">Add your question</button>
+<button type="submit" class="btn btn-custom">Add your question</button>
 
 
 </form>
