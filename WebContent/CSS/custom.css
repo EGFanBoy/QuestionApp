@@ -1,19 +1,21 @@
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Corben', Georgia, Times, serif;
+    
     color:orange;
 }
 a:link,a:visited{
 	color:orange;
 }
 p, div {
-    font-family: 'Nobile', Helvetica, Arial, sans-serif;
+
     color:orange;
 }
 body { 
     background: url(img/escheresque_ste.png) repeat 0 0;
 }
 
-
+.label-clr{
+	color:orange;
+}
 
 .btn-custom {
   background-color: hsl(19, 100%, 49%) !important;
@@ -30,4 +32,8 @@ body {
   color: #333 !important;
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.26);
   -webkit-font-smoothing: antialiased;
+ 
+width: 200px;
+margin-bottom:5px;
+text-align: center;
 }

@@ -7,7 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -39,6 +40,8 @@ public class QuestionApp extends HttpServlet {
 		/*Necessary to connect to the mySQL database*/
 		
 		String dbName="questionapp";//name of mySQL database used by this application
+		String firstName="";
+		String lastName="";
 
 			try{
 			
@@ -48,44 +51,36 @@ public class QuestionApp extends HttpServlet {
 				 * questions to the extracted and the answers from the user
 				 */
 				
-				ResultSet rs1=s.executeQuery("select count(*) from interviewq");
-				rs1.next();
-				int i=rs1.getInt("count(*)");
+			
 				
-				/*create an array for the questions and the answers of the size found by the count SQL statement
+				/*creates arraylists for the questions and the answers 
 				 * 
 				 */
-				
-				String questions[]=new String[i];
-				String answers[]=new String[i];
+				List<String> questions=new ArrayList<String>();
+				List<String> answers=new ArrayList<String>();
+		
 				
 				/*Second SQL statement that extracts all the questions from the database and populates the question array
 				 * 
 				 */
 				ResultSet rs2=s.executeQuery("SELECT * from interviewq");
-				i=0;//resets the counter to 0
+				
 				while(rs2.next()){
-					questions[i]=rs2.getString("question");
-					i++;
-				}
-				 
-			       
-				 /*for loop that gets all the answers submitted, if there is an error reading the answer or it was left blank,
-				  * sets a session variable so error text will be shown on QuestionDashboard.jsp. If there are no mistakes, 
-				  * populates the answer array
+					questions.add(rs2.getString("question"));
+					
+				}			       
+				 /* 
+				  * Loops through the size of the question array since # of questions is the same as the # of answers
 				  */
-				 for(i=0;i<answers.length;i++){
-			    	  
-					 if(request.getParameter("answer"+Integer.toString(i+1))==null||request.getParameter("answer"+Integer.toString(i+1)).equals("")){
-						 request.getSession().setAttribute("err", "yes");
-						 response.sendRedirect("QuestionDashboard.jsp");
-						 return;//leaves loop as soon as one field is found empty
-					 }else{
-						 answers[i]=request.getParameter("answer"+Integer.toString(i+1));
-					 }
+				 for(int i=0;i<questions.size();i++){
+						 answers.add(request.getParameter("answer"+Integer.toString(i+1)));
+					 
 				 }	 
+				 firstName=request.getParameter("firstName");//gets the persons first name from the form
+				 lastName=request.getParameter("lastName");//gets the persons last name from the form
 
-			     compileEmail(questions,answers);//sends the questions and answers array to compile them together to be emailed
+			     compileEmail(questions,answers,firstName,lastName);/**sends the questions, answers and the person's 
+			    personal information to compile them together to be emailed**/
 				c.close();//close the connection to the db
 				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/SubmitSuccesful.html");
 				dispatcher.forward(request,response);
@@ -93,9 +88,7 @@ public class QuestionApp extends HttpServlet {
 			}catch(SQLException e){
 				e.printStackTrace();
 				}
-			/*After all the code in the try block was executed, it will make sure to forward the user to the 
-			 * successful submission page
-			 */
+			
 			
 			
 			
@@ -110,22 +103,22 @@ public class QuestionApp extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
-	public void compileEmail(String [] questions ,String [] answers){ //receives array of questions and the answers
+	public void compileEmail(List<String>questions ,List<String>answers,String firstName,String lastName){ //receives array of questions and the answers
 	/*Necessary information to send the email*/ 
-		String fromAdress="haHAA666imcool@gmail.com";
-		String fromPW="skadoosh123";//password for the from email
+		String fromAdress="questionapp613@gmail.com";
+		String fromPW="crypticpassword123";//password for the from email
 		String toAddress="eric.turriff@gmail.com";
-		String subject="Interview";
-	 String message="Hello, here are the results of the interview:\n";
+		String subject=("Interview for "+firstName+" "+lastName);
+	 String message=("Hello, here are the results of the interview of "+firstName+" "+lastName+":\n");
 	 /*Loops through both the questions and answers array and concatenates the strings from both the arrays with the following
 	  * format
 	  * Q1:....
 	  * A1:....
 	  * etc
 	  */
-	 for(int i=0;i<questions.length;i++){
-		 message+=("Question "+(i+1)+": "+questions[i]+"\n");
-		message+=("Answer "+(i+1)+": "+answers[i]+"\n");
+	 for(int i=0;i<questions.size();i++){
+		 message+=("Question "+(i+1)+": "+questions.get(i)+"\n");
+		message+=("Answer "+(i+1)+": "+answers.get(i)+"\n");
 	 }
 	 /*sends the email information and the message to the static send method in the Mailer class
 	  * 

@@ -2,51 +2,39 @@
 <html>
 <head>
 <script
-	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"
+	type="text/javascript"></script>
 <link href="CSS/bootstrap.min.css" rel="stylesheet">
 <link href="CSS/custom.css" rel="stylesheet">
-<link href="http://fonts.googleapis.com/css?family=Corben:bold"
-	rel="stylesheet" type="text/css">
-<link href="http://fonts.googlepis.com/css?family=Nobile"
-	rel="stylesheet" type="text/css">
+
 </head>
 <body ng-app="myApp" ng-controller="validateCtrl">
 	<div class="container">
 		<form name="myForm" action="LoginHandler" method="post">
-			<div class="form-group row justify-content-center">
-				<div class="col-md-6">
+			<div class="form-group row justify-content-center"><!-- Centers the login form -->
+				<div class="col-md-6 col-lg-3">
+					<!-- Will show a red error message if the username and password fields are left empty -->
 					<p>Username:</p>
-					<input class="form-control" type="text" name="Username"
-						ng-model="user" required style="width: 257px;"> <span
-						style="color: red"
-						ng-show="myForm.Username.$dirty&&myForm.Username.$invalid">
-						<span ng-show="myForm.Username.$error.required">Please
-							enter your username</span>
-					</span><br>
-
-
-
+					<input class="form-control" type="text" name="Username"ng-model="user" required style="width: 257px;"> 
+					<span style="color: red" ng-show="myForm.Username.$dirty&amp;&amp;myForm.Username.$invalid">
+					<span ng-show="myForm.Username.$error.required">Please enter your username</span></span><br>
 					<p>Password:</p>
-					<input class="form-control" type="password" name="Password"
-						ng-model="pass" required style="width: 257px;"> <span
-						style="color: red"
-						ng-show="myForm.Password.$dirty&&myForm.Password.$invalid">
-						<span ng-show="myForm.Password.$error.required">Please
-							enter your password</span>
-					</span><br>
+					<input class="form-control" type="password" name="Password" ng-model="pass" required style="width: 257px;">
+					<span style="color: red" ng-show="!myForm.Password.$pristine&&myForm.Password.$invalid">
+					<span ng-show="myForm.Password.$error.required">Please enter your password</span> </span><br>
 				</div>
-			</div>
+			</div><!-- End of div for the username and password fields -->
 			<div class="row justify-content-center">
-				<div class="col-md-3">
-					<button type="submit" class="btn btn-custom"
-						ng-disabled="myForm.Username.$untouched||myForm.Username.$invalid&&myForm.Password.$untouched&&myForm.Password.$invalid">Log
-						in</button>
+				<!-- centers the log in button relative to the form, also uses Angularjs to
+			make button unclickable if the form hasn't been touched or there is an error with either the username and the password -->
+				<div class="col-md-3 col-lg-1">
+					<button type="submit" class="btn btn-custom" ng-disabled="myForm.Username.$pristine||myForm.Username.$invalid&&myForm.Password.$pristine&&myForm.Password.$invalid" style="width:75px;">Log in</button>
 				</div>
 			</div>
 		</form>
 
-	</div>
+	</div><!-- end of container -->
 </body>
-<script src="js/fieldChecker.js"></script>
+<script src="js/fieldChecker.js" type="text/javascript"></script>
 </html>
 

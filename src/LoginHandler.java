@@ -50,18 +50,9 @@ public class LoginHandler extends HttpServlet {
 		PrintWriter out = response
 				.getWriter();/* printwriter object, might be replace */
 
+		/**removed the if statement to see if the credentials were left blank due to javascript validation**/
 		try {
-			/*
-			 * If the username or password field is left blank or was not read
-			 * properly forwards back to the login form with an error message
-			 */
-
-			if (request.getParameter("Username") == null || request.getParameter("Username").equals("")
-					|| request.getParameter("Password") == null || request.getParameter("Password").equals("")) {
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/Login.html");
-				out.print("<font color=red>Please enter both your username and password.</font>");
-				dispatcher.include(request, response);
-			} else {
+		
 				/*fetches the username and password from the form since they are not null
 				 * 
 				 */
@@ -113,7 +104,7 @@ public class LoginHandler extends HttpServlet {
 				c.close();
 				out.close();
 
-			} // end of else statement
+			 // end of else statement
 
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -54,45 +56,41 @@ public class QuestionDeleter extends HttpServlet {
 			 * array
 			 */
 			
-			ResultSet rs1=s.executeQuery("select count(*) from interviewq");
+			/**ResultSet rs1=s.executeQuery("select count(*) from interviewq");
 			rs1.next();
 			i=rs1.getInt("count(*)");
-			String questions[]=new String[i];
+			String questions[]=new String[i];**/
+			List<String>questions=new ArrayList<String>();
 			/*Second SQL statement that extracts all the questions from the database and populates the question array
 			 * 
 			 */
 			
 			ResultSet rs=s.executeQuery("SELECT * FROM interviewq");
-			i=0;
+		
 			while(rs.next()){
-			questions[i]=rs.getString("question");
-			i++;
+			questions.add(rs.getString("question"));
+		
 			}
 	
 			/*for loops that loops through every question in the array. If the checkbox was checked by the user in the DelQ.jsp form
 			 * it will execute the SQL statement to remove that question from the database. Also increments delQuantity counter
 			 * to determine where to forward the user afterwards
 			 */
-	for(i=0;i<questions.length;i++){
-		
+	for(i=0;i<questions.size();i++){
 		if(request.getParameter("check"+Integer.toString(i+1))!=null&&request.getParameter("check"+Integer.toString(i+1)).equals("checked")){
-			s.executeUpdate("delete from interviewq where question="+"'"+questions[i]+"'");
+			s.executeUpdate("delete from interviewq where question="+"'"+questions.get(i)+"'");
 		delQuantity++;
 		}
 		
 		
 	}
-	/*If something was deleted, send user to the delSuccesful form, else forward them to the delUnsuccessful form
+	/*If something was deleted, send user to the delSuccesful formm
 	 * 
 	 */
 	if(delQuantity>0){
 		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/DelSuccesful.jsp");//change these to html forms
 		dispatcher.forward(request,response);
-	}else {
-		RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/DelUnsuccesful.jsp");
-		dispatcher.forward(request,response);	
 	}
-	
 	
 	}catch(SQLException e){
 		e.printStackTrace();

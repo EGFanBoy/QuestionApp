@@ -42,17 +42,8 @@ public class AddField extends HttpServlet {
 		
 		PrintWriter out = response.getWriter(); /* Printwriter object, might
 											 		replace later*/
-
-		try {
-			/*if the field is empty, it will forward back to AddQ.jsp and add an error message in red*/
-			if (request.getParameter("question") == null || request.getParameter("question").equals("")) {
-				RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/AddQ.jsp");
-
-				out.print("<font color=red>Field left empty. Please enter a question!</font>"); //might be replace
-				dispatcher.include(request, response);
-			} else {
-
-				
+/**removed the if statement to see if the question was left blank due to javascript validation**/
+		try {			
 				Connection c = SQLHandler.getSQLConnection(dbName);//create connection to mySQL database
 				Statement s = c.createStatement();//creates SQL statement, change to preparedStatement
 				
@@ -67,7 +58,7 @@ public class AddField extends HttpServlet {
 				/*Close both the mySQl connection and Printwriter*/
 				c.close();
 				out.close();
-			}
+			
 		}
 
 		catch (SQLException e) {
